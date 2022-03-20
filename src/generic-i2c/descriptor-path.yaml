@@ -1,0 +1,28 @@
+get:
+  tags:
+  - Generic I2C Module
+  summary: Get an I2C module's Descriptor
+  operationId: descriptor
+  description: |
+    All standar Mi80 modules have an I2C descriptor which contains general module informatio, I2C register info
+    and avaiable interupt sources.
+  responses:
+    '200':
+      description: search results matching criteria
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              request:
+                $ref: '../request-info.yaml'
+              data: 
+                $ref: './descriptor.yaml'
+              status:
+                $ref: '../request-status.yaml'
+              success:
+                type: boolean
+                example: true
+          
+    400:
+      description: bad input parameter

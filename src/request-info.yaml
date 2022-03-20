@@ -1,0 +1,8 @@
+type: object
+properties: 
+  uri: 
+    type: string
+    example: /api/67/descriptor
+  uriPattern: 
+    type: string
+    example: 67/descriptor

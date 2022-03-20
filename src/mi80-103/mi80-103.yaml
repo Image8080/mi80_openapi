@@ -1,0 +1,55 @@
+openapi: "3.0.3"
+info:
+  description: API for Mi80-103 REST Module
+  version: 1.0.0
+  title: Mi80-103 REST Module API
+  # put the contact info for your development or API team
+  contact:
+    email: dev@image80.com
+
+  license:
+    name: LGPL
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: "http://{hostName}/{baseUri}/{moduleRoot}/v{apiVersion}"
+    description: the URL of a Mi80-101 module connected to the network
+    variables:
+      hostName:
+        default: mi80-101.local
+        description: Specify the host name of aMi80-101 module
+      baseUri:
+        default: api
+        description: Specify the host name of aMi80-101 module
+      moduleRoot:
+        default: "67"
+        description: Specify the host name of aMi80-101 module
+      apiVersion:
+        default: "1"
+        description: Specify the host name of aMi80-101 module
+
+# tags are used for organizing operations
+tags:
+  - name: Generic I2C Module
+    description: Operations available in all REST modules that extend the GenericI2cRestModule
+  - name: Mi80-103
+    description: Operations unique to Mi80-103 REST Module
+
+paths:
+  /descriptor:
+    $ref: "../generic-i2c/descriptor-path.yaml"
+
+  /info:
+    $ref: "./operations/driver-info.yaml"
+
+components:
+  examples:
+    I2CAddress:
+      value: "67"
+    ModuleName:
+      value: "mi80-103"
+
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic

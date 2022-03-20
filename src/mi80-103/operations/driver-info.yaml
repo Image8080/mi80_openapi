@@ -1,0 +1,45 @@
+parameters:
+  - $ref: '../../module-id-param.yaml'
+
+get:
+  tags:
+  - Mi80-103
+  summary: searches inventory
+  operationId: searchInventory
+  description: |
+    By passing in the appropriate options, you can search for
+    available inventory in the system
+  responses:
+    200:
+      description: search results matching criteria
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              request:
+                $ref: '../../request-info.yaml'
+              data:
+                $ref: '../models/driver-info.yaml'
+              status:
+                $ref: '../../request-status.yaml'
+              success:
+                type: boolean
+                example: true
+          
+    400:
+      description: bad input parameter
+post:
+  tags:
+  - Mi80-103
+  summary: adds an inventory item
+  operationId: addInventory
+  description: Adds an item to the system
+  responses:
+    201:
+      description: item created
+    400:
+      description: invalid input, object invalid
+    409:
+      description: an existing item already exists
+

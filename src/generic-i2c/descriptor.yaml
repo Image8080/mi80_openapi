@@ -1,0 +1,67 @@
+type: object
+properties: 
+  defaultI2cAddress: 
+    type: integer
+    format: int32
+    example: 67
+  moduleId: 
+    type: integer
+    format: int32
+    example: 103
+  name: 
+    type: string
+    example: Mi80-103
+  label: 
+    type: string
+    example: Mi80-103
+  description: 
+    type: string
+    example: Mi80-103 Mosfet Driver
+  registers: 
+    type: array
+    items: 
+      type: object
+      properties: 
+        id: 
+          type: integer
+          format: int32
+          example: 0
+        name: 
+          type: string
+          example: drvInfo
+        label: 
+          type: string
+          example: Driver Info
+        description: 
+          type: string
+          example: Get driver config and voltage/current readings
+        dataType: 
+          type: integer
+          format: int32
+          example: 2
+        size: 
+          type: integer
+          format: int32
+          example: 9
+        access: 
+          type: integer
+          format: int32
+          example: 0
+  interrupts: 
+    type: array
+    items: 
+      type: object
+      properties: 
+        flag: 
+          type: integer
+          format: int32
+          example: 1
+        name: 
+          type: string
+          example: io1Rise
+        label: 
+          type: string
+          example: IO 1 Rise
+        description: 
+          type: string
+          example: 'IO #1 rising edge'

@@ -1,0 +1,47 @@
+tags:
+  - Access
+summary: Read a specific register on an I2C device
+operationId: i2cRead
+description: Read a specific register on an I2C device
+parameters:
+  - name: bytes
+    in: query
+    required: false
+    description: Specify number of bytes to read (defaults to 1)
+    schema:
+      type: integer
+      format: int8
+      minimum: 1
+      maximum: 255
+    example: 8
+
+responses:
+  200:
+    description: Result of reading specific I2C device register
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            request:
+              type: object
+              properties:
+                uri:
+                  type: string
+                  example: /api/i2c/67/130
+                uriPattern:
+                  type: string
+                  example: /i2c/67/130
+            data: 
+              type: array
+              items: 
+                type: integer
+                format: int8
+            status:
+              $ref: "../../common/schema/request-status.yaml"
+            success:
+              type: boolean
+              example: true
+
+  404:
+    $ref: "../../common/responses/404.yaml"

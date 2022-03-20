@@ -1,0 +1,20 @@
+# 404 Not Found
+description: 404 Not Found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status: 
+          type: object
+          properties: 
+            code: 
+              type: integer
+              format: int16
+              example: 404
+            message: 
+              type: string
+              example: Requested URI '/api/unknown/op' was not found
+        success: 
+          type: boolean
+          example: false

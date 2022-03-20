@@ -1,0 +1,42 @@
+type: object
+properties: 
+  status: 
+    type: integer
+    format: int32
+    example: 0
+  frequency: 
+    type: integer
+    format: int32
+    example: 250
+  dutyCycle: 
+    type: integer
+    format: int32
+    example: 30
+  vSupplyOn: 
+    type: integer
+    format: int32
+    example: 0
+  vSupplyOff: 
+    type: integer
+    format: int32
+    example: 0
+  vCurrentSense: 
+    type: integer
+    format: int32
+    example: 0
+  currentWarnThreshold: 
+    type: integer
+    format: int32
+    example: 0
+  currentShutdownThreshold: 
+    type: number
+    format: float
+    example: 3.8
+  currentOn: 
+    type: integer
+    format: int16
+    example: 0
+  current: 
+    type: integer
+    format: int16
+    example: 0

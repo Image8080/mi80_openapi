@@ -1,0 +1,45 @@
+# 400 Bad Request
+description: 400 Bad Request
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        request: 
+          type: object
+          properties: 
+            uri: 
+              type: string
+              example: /api/i2c/x/130
+            uriParams: 
+              type: array
+              items: 
+                type: string
+              examples:
+                - x
+                - 130
+            uriPattern: 
+              type: string
+              example: /i2c/*
+        status: 
+          type: object
+          properties: 
+            source: 
+              type: object
+              properties: 
+                file: 
+                  type: string
+                  example: /Mi80Rest/modules/i2c_bridge_rest_module.hpp
+                line: 
+                  type: integer
+                  format: int32
+                  example: 31
+            code: 
+              type: integer
+              format: int16
+              example: 400
+            message: 
+              type: string
+              example: Missing or invalid i2cAddress (-1) or i2cRegister (-1) parameters
+        success: 
+          type: boolean

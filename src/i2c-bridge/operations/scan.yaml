@@ -1,0 +1,47 @@
+# SCAN operation
+get:
+  tags:
+    - Discovery
+  summary: Scans the I2C Bus for avaiable devices
+  operationId: scan
+  description: Scans the I2C Bus for avaiable devices
+  responses:
+    200:
+      description: Array of detected I2C addresses
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              request:
+                type: object
+                properties:
+                  uri:
+                    type: string
+                    example: /api/i2c/scan
+                  uriPattern:
+                    type: string
+                    example: /i2c/scan
+                  data: 
+                    type: array
+                    items: 
+                      type: object
+                      properties: 
+                        i2cAddress: 
+                          type: integer
+                          format: int32
+                          example: 67
+                        moduleId: 
+                          type: integer
+                          format: int32
+                          example: 103
+                        isMi80Module: 
+                          type: boolean
+              status:
+                $ref: "../../common/schema/request-status.yaml"
+              success:
+                type: boolean
+                example: true
+
+    404:
+      $ref: "../../common/responses/404.yaml"

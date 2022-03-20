@@ -1,0 +1,15 @@
+type: object
+properties:
+  uri:
+    type: string
+    example: /api/i2c/67/130
+  uriParams:
+    type: array
+    items:
+      type: string
+    example:
+      - 67
+      - 130
+  uriPattern:
+    type: string
+    example: /i2c/*

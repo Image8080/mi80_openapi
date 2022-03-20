@@ -1,0 +1,263 @@
+openapi: "3.0.3"
+info:
+  description: Simple API to allow scan, read and write requests on connected I2C modules
+  version: 1.0.0
+  title: I2C Bridge Module API
+  # put the contact info for your development or API team
+  contact:
+    email: dev@image80.com
+
+  license:
+    name: GNU Affero General Public License
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+
+servers:
+  - url: "http://{hostName}/{baseUri}/{moduleRoot}/v{apiVersion}"
+    description: the URL of a Mi80-101 module connected to the network
+    variables:
+      hostName:
+        default: mi80-101.local
+        description: Specify the host name of a Mi80-101 module
+      baseUri:
+        default: api
+        description: Specify the api base URI
+      moduleRoot:
+        default: "i2c"
+        description: Specify the host root URI for the module
+      apiVersion:
+        default: "1"
+        description: Specify the API Version
+
+tags:
+  - name: Discovery
+    description: Operations to detect I2C modules
+  - name: Access
+    description: Operations to read and write I2C modules
+
+paths:
+  /scan:
+    $ref: "./operations/scan.yaml"
+
+  /{i2cAddress}/{i2cRegister}:
+    parameters:
+      - $ref: "#/components/parameters/i2cAddress"
+      - $ref: "#/components/parameters/i2cRegister"
+    get:
+      tags:
+        - Access
+      summary: Read a specific register on an I2C device
+      operationId: i2cRead
+      description: Read a specific register on an I2C device
+      parameters:
+        - name: bytes
+          in: query
+          required: false
+          description: Specify number of bytes to read (defaults to 1)
+          schema:
+            type: integer
+            format: int8
+            minimum: 1
+            maximum: 255
+          example: 8
+      responses:
+        200:
+          $ref: "#/components/responses/readResponse"
+        400:
+          $ref: "#/components/responses/badRequestResponse"
+        404:
+          $ref: "../common/responses/404.yaml"
+
+    put:
+      tags:
+        - Access
+      summary: Write to a specific register on an I2C device
+      operationId: i2cWrite
+      description: Write to a specific register on an I2C device
+      security: 
+        - basicAuth: []
+      
+      parameters:
+        - in: header
+          name: Content-Length
+          required: true
+          description: The content-length should be set the size of the request body when sent
+          schema:
+            type: integer
+            example: 42
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: integer
+                    format: int8
+                  example: 
+                    - 1
+                    - 2
+                    - 3
+      responses:
+        200:
+          $ref: "#/components/responses/writeResponse"
+        400:
+          $ref: "#/components/responses/badRequestResponse"
+        404:
+          $ref: "../common/responses/404.yaml"
+        422:
+          description: Missing required Content-Length header
+        411:
+          description: Content too large
+
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: "HTTP Basic authentication - default username/password: mi80/mi80"
+
+  parameters:
+    i2cAddress:
+      name: i2cAddress
+      in: path
+      required: true
+      description: The I2C address of the device to read (min 8, max 127)
+      schema:
+        type: integer
+        format: int8
+        minimum: 8
+        maximum: 127
+      example: 67
+    i2cRegister:
+      name: i2cRegister
+      in: path
+      required: true
+      description: The I2C register on the device to read
+      schema:
+        type: integer
+        format: int8
+        minimum: 0
+        maximum: 255
+      example: 130    
+
+  schemas:
+    requestInfo:
+      type: object
+      properties: 
+        uri: 
+          type: string
+          example: /api/i2c/v1/67/130
+        uriParams: 
+          type: array
+          items: 
+            type: string
+          example: 
+            - 67
+            - 130
+        uriPattern: 
+          type: string
+          example: /i2c/v1/*
+
+    statusInfo:
+      type: object
+      properties: 
+        i2c: 
+          type: object
+          properties: 
+            errCode: 
+              type: integer
+              format: int32
+              example: 0
+            errMessage: 
+              type: string
+              example: OK
+            i2cAddress: 
+              type: integer
+              format: int32
+              example: 67
+            i2cRegister: 
+              type: integer
+              format: int32
+              example: 130
+            byteCount: 
+              type: integer
+              format: int32
+              example: 8
+        code: 
+          type: integer
+          format: int32
+          example: 0
+        message: 
+          type: string
+          example: OK
+
+  responses:
+    readResponse:
+      description: Result of reading specific I2C device register
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              request: 
+                $ref: "#/components/schemas/requestInfo"
+              data: 
+                type: array
+                items: 
+                  type: integer
+                  format: int32
+                  example: 103
+              status: 
+                $ref: "#/components/schemas/statusInfo"
+              success: 
+                type: boolean
+
+    writeResponse:
+      description: Result of reading specific I2C device register
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              request: 
+                $ref: "#/components/schemas/requestInfo"
+              status: 
+                $ref: "#/components/schemas/statusInfo"
+              success: 
+                type: boolean
+
+    badRequestResponse:
+      description: Response from bad request data or format
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              request: 
+                $ref: "#/components/schemas/requestInfo"
+              status: 
+                type: object
+                properties: 
+                  source: 
+                    type: object
+                    properties: 
+                      file: 
+                        type: string
+                        example: /Mi80Rest/modules/i2c_bridge_rest_module.hpp
+                      line: 
+                        type: integer
+                        format: int32
+                        example: 34
+                  code: 
+                    type: integer
+                    format: int32
+                    example: 400
+                  message: 
+                    type: string
+                    example: "Error: invalid I2C address 679 must be >= 8 and <= 126"
+
+              success: 
+                type: boolean

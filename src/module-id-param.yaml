@@ -1,0 +1,11 @@
+name: moduleId
+in: path
+required: true
+description: By default this is the I2C address of the module, but may also be user-defined
+schema:
+  type: string
+examples: 
+  I2C Address:
+    $ref: '#components/examples/I2CAddress'
+  Module Name:
+    $ref: '#components/examples/ModuleName'

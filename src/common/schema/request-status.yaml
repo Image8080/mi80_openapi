@@ -1,0 +1,10 @@
+type: object
+properties:
+  code: 
+    type: integer
+    format: int16
+    example: 0
+  message: 
+    type: string
+    example: OK
+
