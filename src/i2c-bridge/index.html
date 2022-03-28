@@ -37,9 +37,10 @@
     window.onload = function () {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "i2c-bridge.yaml",
+        url: "./i2c-bridge.yaml",
         dom_id: '#swagger-ui',
         deepLinking: true,
+        enableCORS: true,
         presets: [
           SwaggerUIBundle.presets.apis,
           SwaggerUIStandalonePreset
